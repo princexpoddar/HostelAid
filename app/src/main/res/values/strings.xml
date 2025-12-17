@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">HostelAid</string>
+
+    <string name="report_food_waste">Report Food Waste</string>
+    <string name="donate_clothes">Donate Clothes</string>
+    <string name="cooler_complaint">Cooler Complaint</string>
+    <string name="eco_fun">Eco Fun</string>
+
+    <string name="select_hostel">Select Hostel</string>
+    <string name="enter_quantity">Enter quantity of food waste</string>
+    <string name="enter_food_items">Enter food item names</string>
+    <string name="report_to_ngo">Report to NGO</string>
+
+    <string name="cooler_number">Enter Cooler Number</string>
+    <string name="submit_complaint">Submit Complaint</string>
+
+    <string name="number_of_clothes">Enter number of clothes</string>
+
+    <string name="quiz">Take Eco Quiz</string>
+    <string name="game">Play Eco Game</string>
+    <string name="blogs">Read Eco Blogs</string>
+
+    <string name="please_fill_all">Please fill all fields</string>
+    <string name="food_reported">Food waste reported to NGO from</string>
+    <string name="cooler_complaint_submitted">Complaint from %1$s submitted successfully!</string>
+    <string name="please_enter_cooler_number">Please enter cooler number</string>
+    <string name="clothes_donation_reported">Clothes donation from %1$s reported to NGO!</string>
+    <string name="please_enter_clothes_count">Please enter number of clothes</string>
+
+    <string-array name="hostel_names">
+        <item>IVH</item>
+        <item>GH</item>
+        <item>BH-1</item>
+        <item>BH-2</item>
+        <item>BH-3</item>
+    </string-array>
+
+    <string-array name="cooler_problems">
+        <item>Water is not cool</item>
+        <item>Water quality is bad</item>
+        <item>Not working</item>
+        <item>Tap overflowing</item>
+        <item>Leakage</item>
+    </string-array>
+</resources>
+
