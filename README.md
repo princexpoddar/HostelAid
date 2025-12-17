@@ -33,9 +33,6 @@ A sustainable hostel management Android application designed to help students ma
 - Google Apps Script backend integration
 - Password validation
 
-## Screenshots
-
-*Add screenshots of your app here*
 
 ## Tech Stack
 
@@ -187,21 +184,4 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Authors
-
-- **Your Name** - *Initial work* - [YourGitHub](https://github.com/yourusername)
-
-## Acknowledgments
-
-- Material Design Components
-- OkHttp for networking
-- Google Apps Script for backend services
-
-## Support
-
-For support, email your-email@example.com or create an issue in the repository.
-
----
-
-Made with ❤️ for sustainable living
 
