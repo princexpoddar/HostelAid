@@ -39,6 +39,10 @@ public class DataStorageHelper {
         return gson.fromJson(json, type);
     }
     
+    public void replaceFoodWasteRequests(List<FoodWasteRequest> requests) {
+        prefs.edit().putString(KEY_FOOD_WASTE, gson.toJson(requests)).apply();
+    }
+    
     // Clothes Donation Methods
     public void saveClothesDonation(ClothesDonation donation) {
         List<ClothesDonation> donations = getClothesDonations();
@@ -56,6 +60,10 @@ public class DataStorageHelper {
         return gson.fromJson(json, type);
     }
     
+    public void replaceClothesDonations(List<ClothesDonation> donations) {
+        prefs.edit().putString(KEY_CLOTHES_DONATION, gson.toJson(donations)).apply();
+    }
+    
     // Cooler Complaint Methods
     public void saveCoolerComplaint(CoolerComplaint complaint) {
         List<CoolerComplaint> complaints = getCoolerComplaints();
@@ -71,6 +79,10 @@ public class DataStorageHelper {
         }
         Type type = new TypeToken<List<CoolerComplaint>>(){}.getType();
         return gson.fromJson(json, type);
+    }
+    
+    public void replaceCoolerComplaints(List<CoolerComplaint> complaints) {
+        prefs.edit().putString(KEY_COOLER_COMPLAINTS, gson.toJson(complaints)).apply();
     }
 }
 

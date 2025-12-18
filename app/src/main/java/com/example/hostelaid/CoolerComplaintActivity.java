@@ -29,14 +29,12 @@ public class CoolerComplaintActivity extends AppCompatActivity {
     private EditText etCoolerNumber;
     private Button btnSubmitComplaint, btnViewPrevious;
     private DataStorageHelper dataStorage;
-    private final String scriptUrl = "https://script.google.com/macros/s/YOUR_COOLER_COMPLAINT_SCRIPT_URL/exec";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cooler_complaint);
 
-        // Initialize views
         spinnerHostel = findViewById(R.id.spinnerHostel);
         spinnerFloor = findViewById(R.id.spinnerFloor);
         etCoolerNumber = findViewById(R.id.etCoolerNumber);
@@ -44,7 +42,6 @@ public class CoolerComplaintActivity extends AppCompatActivity {
         btnSubmitComplaint = findViewById(R.id.btnSubmitComplaint);
         btnViewPrevious = findViewById(R.id.btnViewPrevious);
 
-        // Setup hostel dropdown
         String[] hostels = {"Srisailam (IVH)", "Gangotri (GH)", "Aravali", "Shivalik", "Satpura", "Nilgiri"};
         ArrayAdapter<String> hostelAdapter = new ArrayAdapter<>(this, 
             android.R.layout.simple_dropdown_item_1line, hostels);
@@ -52,7 +49,6 @@ public class CoolerComplaintActivity extends AppCompatActivity {
         spinnerHostel.setThreshold(1);
         spinnerHostel.setOnClickListener(v -> spinnerHostel.showDropDown());
 
-        // Setup floor dropdown
         String[] floors = {"Ground Floor", "1st Floor", "2nd Floor", "3rd Floor"};
         ArrayAdapter<String> floorAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_dropdown_item_1line, floors);
@@ -60,7 +56,6 @@ public class CoolerComplaintActivity extends AppCompatActivity {
         spinnerFloor.setThreshold(1);
         spinnerFloor.setOnClickListener(v -> spinnerFloor.showDropDown());
 
-        // Setup problem type dropdown
         String[] problems = {
             "Not Working",
             "Leaking",
@@ -76,13 +71,10 @@ public class CoolerComplaintActivity extends AppCompatActivity {
         spinnerProblem.setThreshold(1);
         spinnerProblem.setOnClickListener(v -> spinnerProblem.showDropDown());
 
-        // Initialize data storage
         dataStorage = new DataStorageHelper(this);
 
-        // Submit complaint button click
         btnSubmitComplaint.setOnClickListener(v -> submitComplaint());
 
-        // View previous complaints button click
         btnViewPrevious.setOnClickListener(v -> viewPreviousComplaints());
     }
 
@@ -112,12 +104,10 @@ public class CoolerComplaintActivity extends AppCompatActivity {
             return;
         }
 
-        // Save locally
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         CoolerComplaint complaint = new CoolerComplaint(selectedHostel, selectedFloor, coolerNumber, selectedProblem, timestamp);
         dataStorage.saveCoolerComplaint(complaint);
 
-        // Submit to backend
         submitToBackend(selectedHostel, selectedFloor, coolerNumber, selectedProblem);
     }
 
@@ -139,7 +129,7 @@ public class CoolerComplaintActivity extends AppCompatActivity {
             );
 
             Request request = new Request.Builder()
-                    .url(scriptUrl)
+                    .url(BackendConfig.COOLER_COMPLAINT_SCRIPT_URL)
                     .post(body)
                     .build();
 

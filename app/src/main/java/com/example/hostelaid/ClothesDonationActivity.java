@@ -36,14 +36,12 @@ public class ClothesDonationActivity extends AppCompatActivity {
     private ClothItemAdapter adapter;
     private List<ClothItem> clothItems;
     private DataStorageHelper dataStorage;
-    private final String scriptUrl = "https://script.google.com/macros/s/YOUR_CLOTHES_DONATION_SCRIPT_URL/exec";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clothes_donation);
 
-        // Initialize views
         spinnerHostel = findViewById(R.id.spinnerHostel);
         etClothType = findViewById(R.id.etClothType);
         etClothSize = findViewById(R.id.etClothSize);
@@ -53,7 +51,6 @@ public class ClothesDonationActivity extends AppCompatActivity {
         btnViewPrevious = findViewById(R.id.btnViewPrevious);
         rvClothItems = findViewById(R.id.rvClothItems);
 
-        // Setup hostel dropdown
         String[] hostels = {"Srisailam (IVH)", "Gangotri (GH)", "Aravali", "Shivalik", "Satpura", "Nilgiri"};
         ArrayAdapter<String> hostelAdapter = new ArrayAdapter<>(this, 
             android.R.layout.simple_dropdown_item_1line, hostels);
@@ -61,7 +58,6 @@ public class ClothesDonationActivity extends AppCompatActivity {
         spinnerHostel.setThreshold(1);
         spinnerHostel.setOnClickListener(v -> spinnerHostel.showDropDown());
 
-        // Setup cloth type dropdown
         String[] clothTypes = {"T-Shirts", "Shirts", "Pants", "Jeans", "Sweaters", "Jackets", "Dresses", "Skirts", "Shoes", "Accessories"};
         ArrayAdapter<String> clothTypeAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_dropdown_item_1line, clothTypes);
@@ -69,7 +65,6 @@ public class ClothesDonationActivity extends AppCompatActivity {
         etClothType.setThreshold(1);
         etClothType.setOnClickListener(v -> etClothType.showDropDown());
 
-        // Setup cloth size dropdown
         String[] sizes = {"XS", "S", "M", "L", "XL", "XXL", "XXXL"};
         ArrayAdapter<String> sizeAdapter = new ArrayAdapter<>(this,
             android.R.layout.simple_dropdown_item_1line, sizes);
@@ -77,22 +72,17 @@ public class ClothesDonationActivity extends AppCompatActivity {
         etClothSize.setThreshold(1);
         etClothSize.setOnClickListener(v -> etClothSize.showDropDown());
 
-        // Setup RecyclerView
         clothItems = new ArrayList<>();
         adapter = new ClothItemAdapter(clothItems, this::removeClothItem);
         rvClothItems.setLayoutManager(new LinearLayoutManager(this));
         rvClothItems.setAdapter(adapter);
         
-        // Initialize data storage
         dataStorage = new DataStorageHelper(this);
 
-        // Add item button click
         btnAddItem.setOnClickListener(v -> addClothItem());
 
-        // Submit donation button click
         btnSubmitDonation.setOnClickListener(v -> submitDonation());
 
-        // View previous donations button click
         btnViewPrevious.setOnClickListener(v -> viewPreviousDonations());
     }
 
@@ -139,12 +129,10 @@ public class ClothesDonationActivity extends AppCompatActivity {
             return;
         }
 
-        // Save locally
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         ClothesDonation donation = new ClothesDonation(selectedHostel, new ArrayList<>(clothItems), timestamp);
         dataStorage.saveClothesDonation(donation);
 
-        // Submit to backend
         submitToBackend(selectedHostel, clothItems);
     }
 
@@ -170,7 +158,7 @@ public class ClothesDonationActivity extends AppCompatActivity {
             );
 
             Request request = new Request.Builder()
-                    .url(scriptUrl)
+                    .url(BackendConfig.CLOTHES_DONATION_SCRIPT_URL)
                     .post(body)
                     .build();
 

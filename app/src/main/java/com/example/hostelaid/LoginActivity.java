@@ -30,19 +30,19 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
     private TextInputLayout emailLayout, passwordLayout;
     private Button btnLogin;
-    private final String scriptUrl = "https://script.google.com/macros/s/AKfycbw0YHuRdT4h7Dni0TDIstSeHDJGqcTecupk6SedWh_LlYRCNFmqHHvlTGuItxwkl4Eb/exec"; // Replace with your Apps Script web app URL
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize views
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         emailLayout = findViewById(R.id.emailLayout);
         passwordLayout = findViewById(R.id.passwordLayout);
         btnLogin = findViewById(R.id.btnLogin);
+        sessionManager = new SessionManager(this);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,13 +73,11 @@ public class LoginActivity extends AppCompatActivity {
         }
         passwordLayout.setError(null);
 
-        // Check if email is college email
         if (!email.endsWith("@iiitm.ac.in")) {
             emailLayout.setError("Use college email only!");
             return;
         }
 
-        // Proceed with login
         try {
             loginUser(email, password);
         } catch (JSONException e) {
@@ -100,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         );
 
         Request request = new Request.Builder()
-                .url(scriptUrl)
+                .url(BackendConfig.LOGIN_SCRIPT_URL)
                 .post(body)
                 .build();
 
@@ -116,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     if (responseData.equalsIgnoreCase("success")) {
+                        sessionManager.saveEmail(email);
                         Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);

@@ -13,6 +13,7 @@ public class PreviousCoolerComplaintActivity extends AppCompatActivity {
     private TextView tvEmpty;
     private DataStorageHelper dataStorage;
     private PreviousCoolerComplaintAdapter adapter;
+    private SyncManager syncManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,22 @@ public class PreviousCoolerComplaintActivity extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tvEmpty);
 
         dataStorage = new DataStorageHelper(this);
+        syncManager = new SyncManager(this);
+        loadFromStorage();
+        syncManager.syncCooler(new SyncManager.SyncListener() {
+            @Override
+            public void onSuccess() {
+                runOnUiThread(PreviousCoolerComplaintActivity.this::loadFromStorage);
+            }
+
+            @Override
+            public void onError(String message) {
+                // Cached data stays visible
+            }
+        });
+    }
+
+    private void loadFromStorage() {
         List<CoolerComplaint> complaints = dataStorage.getCoolerComplaints();
 
         if (complaints.isEmpty()) {

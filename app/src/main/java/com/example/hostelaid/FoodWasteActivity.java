@@ -36,14 +36,12 @@ public class FoodWasteActivity extends AppCompatActivity {
     private FoodItemAdapter adapter;
     private List<FoodItem> foodItems;
     private DataStorageHelper dataStorage;
-    private final String scriptUrl = "https://script.google.com/macros/s/YOUR_FOOD_WASTE_SCRIPT_URL/exec"; // Replace with your Apps Script URL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_waste);
 
-        // Initialize views
         spinnerHostel = findViewById(R.id.spinnerHostel);
         etFoodItem = findViewById(R.id.etFoodItem);
         etQuantity = findViewById(R.id.etQuantity);
@@ -52,7 +50,6 @@ public class FoodWasteActivity extends AppCompatActivity {
         btnViewPrevious = findViewById(R.id.btnViewPrevious);
         rvFoodItems = findViewById(R.id.rvFoodItems);
 
-        // Setup hostel dropdown
         String[] hostels = {"Srisailam (IVH)", "Gangotri (GH)", "Aravali", "Shivalik", "Satpura", "Nilgiri"};
         ArrayAdapter<String> hostelAdapter = new ArrayAdapter<>(this, 
             android.R.layout.simple_dropdown_item_1line, hostels);
@@ -60,22 +57,17 @@ public class FoodWasteActivity extends AppCompatActivity {
         spinnerHostel.setThreshold(1); // Show suggestions after typing 1 character
         spinnerHostel.setOnClickListener(v -> spinnerHostel.showDropDown());
 
-        // Setup RecyclerView
         foodItems = new ArrayList<>();
         adapter = new FoodItemAdapter(foodItems, this::removeFoodItem);
         rvFoodItems.setLayoutManager(new LinearLayoutManager(this));
         rvFoodItems.setAdapter(adapter);
         
-        // Initialize data storage
         dataStorage = new DataStorageHelper(this);
 
-        // Add item button click
         btnAddItem.setOnClickListener(v -> addFoodItem());
 
-        // Report to NGO button click
         btnReportNGO.setOnClickListener(v -> reportToNGO());
 
-        // View previous requests button click
         btnViewPrevious.setOnClickListener(v -> viewPreviousRequests());
     }
 
@@ -120,12 +112,10 @@ public class FoodWasteActivity extends AppCompatActivity {
             return;
         }
 
-        // Save locally
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         FoodWasteRequest request = new FoodWasteRequest(selectedHostel, new ArrayList<>(foodItems), timestamp);
         dataStorage.saveFoodWasteRequest(request);
 
-        // Submit to backend
         submitToBackend(selectedHostel, foodItems);
     }
 
@@ -151,7 +141,7 @@ public class FoodWasteActivity extends AppCompatActivity {
             );
 
             Request request = new Request.Builder()
-                    .url(scriptUrl)
+                    .url(BackendConfig.FOOD_WASTE_SCRIPT_URL)
                     .post(body)
                     .build();
 

@@ -13,6 +13,7 @@ public class PreviousFoodWasteActivity extends AppCompatActivity {
     private TextView tvEmpty;
     private DataStorageHelper dataStorage;
     private PreviousFoodWasteAdapter adapter;
+    private SyncManager syncManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,23 @@ public class PreviousFoodWasteActivity extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tvEmpty);
 
         dataStorage = new DataStorageHelper(this);
+        syncManager = new SyncManager(this);
+        loadFromStorage();
+        // Pull remote latest in foreground
+        syncManager.syncFoodWaste(new SyncManager.SyncListener() {
+            @Override
+            public void onSuccess() {
+                runOnUiThread(PreviousFoodWasteActivity.this::loadFromStorage);
+            }
+
+            @Override
+            public void onError(String message) {
+                // Ignore; user still sees local cache
+            }
+        });
+    }
+
+    private void loadFromStorage() {
         List<FoodWasteRequest> requests = dataStorage.getFoodWasteRequests();
 
         if (requests.isEmpty()) {

@@ -13,6 +13,7 @@ public class PreviousClothesDonationActivity extends AppCompatActivity {
     private TextView tvEmpty;
     private DataStorageHelper dataStorage;
     private PreviousClothesDonationAdapter adapter;
+    private SyncManager syncManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,22 @@ public class PreviousClothesDonationActivity extends AppCompatActivity {
         tvEmpty = findViewById(R.id.tvEmpty);
 
         dataStorage = new DataStorageHelper(this);
+        syncManager = new SyncManager(this);
+        loadFromStorage();
+        syncManager.syncClothes(new SyncManager.SyncListener() {
+            @Override
+            public void onSuccess() {
+                runOnUiThread(PreviousClothesDonationActivity.this::loadFromStorage);
+            }
+
+            @Override
+            public void onError(String message) {
+                // Keep showing cached data
+            }
+        });
+    }
+
+    private void loadFromStorage() {
         List<ClothesDonation> donations = dataStorage.getClothesDonations();
 
         if (donations.isEmpty()) {
