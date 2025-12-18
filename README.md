@@ -150,6 +150,12 @@ Update hostel names in:
 - Data persists even if backend sync fails
 - View previous submissions anytime
 
+### Sync Across Devices
+- Background sync every 30 minutes (WorkManager) pulls latest data from backend
+- On app open, a one-time foreground sync runs to refresh local cache
+- Backend must support GET `?action=list&type=<food_waste|clothes_donation|cooler_complaint>&email=<user>`
+- Replace placeholder URLs in `BackendConfig.java` with your Apps Script endpoints
+
 ### Offline Support
 - App works offline for viewing previous submissions
 - Backend sync happens when online
